@@ -1,4 +1,4 @@
-import { ChangeEvent, useMemo, useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { Button } from "../components/Button";
 import { ConfirmModal } from "../components/ConfirmModal";
 import formStyle from "../styles/form.module.scss";
@@ -73,7 +73,6 @@ const DynamicModule = ({ type }: IProps) => {
 
   const handleDelete = (id: string) => {
     deleteSchedule(id)
-      .unwrap()
       .then(() => {
         refetch();
         toastMessage("success", "Successfully deleted");

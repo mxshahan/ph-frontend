@@ -1,6 +1,4 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/dist/query/react";
-import { CreateScheduleDto } from "../../interfaces";
-import { Schedule } from "../../interfaces/schedule.interface";
 import { Routine } from "../../interfaces/routine.interface";
 
 export const routineApi = createApi({

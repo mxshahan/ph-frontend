@@ -1,7 +1,29 @@
 import { useMemo } from "react";
 import { TablePlus } from "../components/TablePlus";
-import { Schedule, ScheduleType } from "../interfaces";
+import { ScheduleType, Weekday } from "../interfaces";
 import { useGetSchedulesQuery } from "../store/schedule/schedule.api";
+import moment from "moment";
+
+const getDiffInHours = (startTime: string, endTime: string) => {
+  const start = moment(startTime, "HH:mm");
+  const end = moment(endTime, "HH:mm");
+  let duration = moment.duration(end.diff(start)).asHours();
+
+  if (duration < 0) {
+    duration = 24 - Math.abs(duration);
+  }
+  return duration;
+};
+
+// SLEEP DURATION 8 HOURS AT LEAST
+const getSleepHours = () => {
+  const sleepSchedule = {
+    startTime: "21:00",
+    endTime: "05:00",
+  };
+
+  return getDiffInHours(sleepSchedule.startTime, sleepSchedule.endTime);
+};
 
 interface IProps {}
 
@@ -18,6 +40,25 @@ export const Routine = (props: IProps) => {
     return [];
   }, [data]);
 
+  const dayWiseHourConsume = () => {
+    const days: any = {};
+    Object.keys(Weekday).map((day) => {
+      days[day] = getSleepHours();
+      const job = jobSchedule.find((d) => d.day.trim() === day);
+      console.log(job);
+      if (job) {
+        days[day] = days[day] + getDiffInHours(job.courses[0].startTime, job.courses[0].endTime);
+      }
+      return days;
+    });
+    return days;
+  };
+
+  const dayOfWeek = useMemo(() => {
+    const consume = dayWiseHourConsume();
+    return consume;
+  }, [courseSchedule, jobSchedule]);
+
   return (
     <div className="mb-10">
       <div className="flex flex-row justify-between items-center">
@@ -26,25 +67,29 @@ export const Routine = (props: IProps) => {
       </div>
 
       <TablePlus
-        data={Array.isArray(data) ? data : []}
+        data={Object.keys(dayOfWeek).map((d) => ({ day: d, consume: dayOfWeek[d], remaining: 24 - dayOfWeek[d] }))}
         headerHidden={true}
         headers={[
           {
             name: "Day",
             value: "day",
-            render: (row: Schedule) => (
+            render: (row) => (
               <div className="flex justify-between items-start">
                 <div className="flex-1">
                   <strong>{row.day}</strong>
-                  <div className="grid grid-cols-4">
-                    {row.courses.map((course) => (
-                      <div className="border border-cyan-500 p-2 w-full">
-                        <p>Title: {course.title}</p>
-                        <p>Start Time: {course.startTime}</p>
-                        <p>End Time: {course.endTime}</p>
-                      </div>
-                    ))}
-                  </div>
+                  {row.remaining <= 0 ? (
+                    <p className="text-red-600">
+                      You do not have time. You cannot cover your course until you change your sleep time or job time
+                    </p>
+                  ) : row.remaining <= 4 ? (
+                    <p className="text-orange-600">
+                      You do a very short time to cover your course. You can swich your job to get more time
+                    </p>
+                  ) : (
+                    <p className="text-green-600">
+                      You have extra {row.remaining} hours remainings. You can cover your course
+                    </p>
+                  )}
                 </div>
               </div>
             ),
