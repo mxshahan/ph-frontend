@@ -1,8 +1,8 @@
-import React, { BaseSyntheticEvent, FormEvent, useState } from "react";
+import React, { ChangeEvent, FormEvent, useState } from "react";
 import { Link } from "react-router-dom";
 import { LoginRequest } from "../../interfaces/dto";
-import { RequestError } from "../../interfaces/models";
-import { useLoginMutation } from "../../store/apis/auth.api";
+import { RequestError } from "../../interfaces";
+import { useLoginMutation } from "../../store/auth/auth.api";
 import formStyle from "../../styles/form.module.scss";
 
 export const Login = () => {
@@ -13,7 +13,7 @@ export const Login = () => {
 
   const [loginUser, { isLoading, isError, error: apiError }] = useLoginMutation();
 
-  const onChange = (e: BaseSyntheticEvent) => {
+  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     setState({ ...state, [e.target.name]: e.target.value });
   };
 
@@ -32,8 +32,7 @@ export const Login = () => {
         <form onSubmit={onSubmit}>
           <div className={formStyle.formField}>
             <label className={formStyle.formLabel}>Email</label>
-            <input placeholder="Email" className={formStyle.formInput} name="email" onChange={onChange} />
-            {/* <p className="text-red-400">{error?.email}</p> */}
+            <input type="email" placeholder="Email" className={formStyle.formInput} name="email" onChange={onChange} />
           </div>
           <div className={formStyle.formField}>
             <label className={formStyle.formLabel}>Password</label>

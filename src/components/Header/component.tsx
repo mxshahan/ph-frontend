@@ -1,6 +1,6 @@
-import { FaBeer, FaHeart } from "react-icons/fa";
+import { FaBeer, FaHeart, FaUser } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
-import { useLogoutMutation } from "../../store/apis/auth.api";
+import { useLogoutMutation } from "../../store/auth/auth.api";
 import style from "./component.module.scss";
 
 interface Menu {
@@ -12,15 +12,15 @@ interface Menu {
 
 const menu: Menu[] = [
   {
-    label: "Home",
+    label: "Routine",
     path: "/",
     icon: <FaBeer />,
     exact: true,
   },
   {
-    label: "Favourites Movies",
-    path: "/favs",
-    icon: <FaHeart />,
+    label: "Profile",
+    path: "/profile",
+    icon: <FaUser />,
   },
 ];
 

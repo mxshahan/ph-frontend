@@ -1,7 +1,7 @@
 import React, { BaseSyntheticEvent, FormEvent, useState } from "react";
 import { Link } from "react-router-dom";
-import { RegisterUserRequest, RequestError } from "../../interfaces";
-import { useRegisterMutation } from "../../store/apis/auth.api";
+import { RegisterUserRequest } from "../../interfaces";
+import { useRegisterMutation } from "../../store/auth/auth.api";
 import formStyle from "../../styles/form.module.scss";
 
 export const Register = () => {
@@ -13,7 +13,7 @@ export const Register = () => {
 
   const [cpassword, setCpassword] = useState<string>("");
 
-  const [registerUser, { isLoading, isError, error: apiError }] = useRegisterMutation();
+  const [registerUser, { isLoading }] = useRegisterMutation();
 
   const onChange = (e: BaseSyntheticEvent) => {
     setState({ ...state, [e.target.name]: e.target.value });
@@ -25,7 +25,6 @@ export const Register = () => {
     registerUser(state);
   };
 
-  const ApiError = apiError as RequestError;
   return (
     <div className="h-screen flex items-center justify-center bg-slate-100">
       <div className="w-1/4 p-3 ">

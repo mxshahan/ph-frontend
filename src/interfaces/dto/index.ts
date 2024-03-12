@@ -1,2 +1,2 @@
 export * from "./user.dto";
-export * from "./movie.dto";
+export * from "./shedule.dto";

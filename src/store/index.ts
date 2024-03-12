@@ -2,10 +2,10 @@ import { Action, combineReducers, configureStore, ThunkAction } from "@reduxjs/t
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 
-import { authApi } from "./apis/auth.api";
-import { favouriteApi } from "./apis/favourite.api";
-import { movieApi } from "./apis/movie.api";
-import AuthSlice from "./slices/auth.slice";
+import { authApi } from "./auth/auth.api";
+import AuthSlice from "./auth/auth.slice";
+import { scheduleApi } from "./schedule/schedule.api";
+import { routineApi } from "./routine/routine.api";
 
 const persistConfig = {
   key: AuthSlice.name,
@@ -13,13 +13,13 @@ const persistConfig = {
 };
 
 const rootReducer = combineReducers({
-  // API's
-  [authApi.reducerPath]: authApi.reducer,
-  [movieApi.reducerPath]: movieApi.reducer,
-  [favouriteApi.reducerPath]: favouriteApi.reducer,
-
   // Slices
   [AuthSlice.name]: persistReducer(persistConfig, AuthSlice.reducer),
+
+  // API's
+  [authApi.reducerPath]: authApi.reducer,
+  [scheduleApi.reducerPath]: scheduleApi.reducer,
+  [routineApi.reducerPath]: routineApi.reducer,
 });
 
 //
@@ -30,8 +30,8 @@ const store = configureStore({
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({ serializableCheck: false })
       .concat(authApi.middleware)
-      .concat(movieApi.middleware)
-      .concat(movieApi.middleware),
+      .concat(scheduleApi.middleware)
+      .concat(routineApi.middleware),
 });
 
 export type AppDispatch = typeof store.dispatch;

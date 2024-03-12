@@ -5,11 +5,13 @@ import AppRouter from "./routes";
 import { ReduxProvider } from "./store/provider";
 
 import "./styles/index.scss";
+import { Toaster } from "react-hot-toast";
 
 const App: React.FC = () => (
   <React.StrictMode>
     <ReduxProvider>
       <BrowserRouter>
+        <Toaster />
         <AppRouter />
       </BrowserRouter>
     </ReduxProvider>

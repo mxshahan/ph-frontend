@@ -1,4 +1,5 @@
 import React, { useMemo } from "react";
+import { FaAngleDoubleLeft, FaAngleDoubleRight } from "react-icons/fa";
 
 interface PaginationType {
   total: number;
@@ -6,18 +7,18 @@ interface PaginationType {
   pageSize: number;
   className?: string;
   // eslint-disable-next-line no-unused-vars
-  onChangePage?: ({ page, pageSize }: { page: number; pageSize: number }) => void;
+  onChangePage?: ({ page, pageSize }: { page: number; pageSize: number }) => any;
   style?: Object;
 }
 
-export const Pagination = ({
+export function Pagination({
   total,
   page = 1,
   pageSize = 20,
   className,
   onChangePage = () => {},
   style,
-}: PaginationType) => {
+}: PaginationType) {
   const totalPage = Math.ceil(total / pageSize);
 
   const handleChange = (p: number) => {
@@ -33,9 +34,9 @@ export const Pagination = ({
     if (page >= totalPage - 5) {
       startAt = totalPage - 10;
       endAt = totalPage - 5;
-    } else if (page > 5) {
-      startAt = page - 5;
-      endAt = page;
+    } else if (page > 3) {
+      startAt = page - 3;
+      endAt = page + 3;
     }
 
     return { startAt, endAt };
@@ -43,9 +44,20 @@ export const Pagination = ({
 
   return total ? (
     <div className={className} style={style}>
-      <nav className="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
+      <nav className="inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
         <button
-          className="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
+          className="inline-flex items-center px-3 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
+          onClick={() => {
+            if (page > 1) {
+              handleChange(1);
+            }
+          }}
+          disabled={page === 1}
+        >
+          <FaAngleDoubleLeft />
+        </button>
+        <button
+          className="inline-flex items-center px-2 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
           onClick={() => {
             if (page > 1) {
               handleChange(page - 1);
@@ -80,16 +92,16 @@ export const Pagination = ({
                   aria-current="page"
                   className={`${
                     page === p
-                      ? "z-10 bg-indigo-50 border-indigo-500 text-indigo-600"
+                      ? " bg-indigo-50 border-indigo-500 text-indigo-600"
                       : "bg-white border-gray-300 text-gray-500 hover:bg-gray-50 "
-                  } relative inline-flex items-center px-4 py-2 border text-sm font-medium`}
+                  } inline-flex items-center px-4 py-2 border text-sm font-medium`}
                   onClick={() => handleChange(p)}
                 >
                   {p}
                 </button>
               );
             })}
-            <span className="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700">
+            <span className="inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700">
               ...
             </span>
             {pages.slice(totalPage - 5, totalPage).map((i) => {
@@ -101,9 +113,9 @@ export const Pagination = ({
                   aria-current="page"
                   className={`${
                     page === p
-                      ? "z-10 bg-indigo-50 border-indigo-500 text-indigo-600"
+                      ? " bg-indigo-50 border-indigo-500 text-indigo-600"
                       : "bg-white border-gray-300 text-gray-500 hover:bg-gray-50 "
-                  } relative inline-flex items-center px-4 py-2 border text-sm font-medium`}
+                  }  inline-flex items-center px-4 py-2 border text-sm font-medium`}
                   onClick={() => handleChange(p)}
                 >
                   {p}
@@ -122,7 +134,7 @@ export const Pagination = ({
                   page === p
                     ? "z-10 bg-indigo-50 border-indigo-500 text-indigo-600"
                     : "bg-white border-gray-300 text-gray-500 hover:bg-gray-50 "
-                } relative inline-flex items-center px-4 py-2 border text-sm font-medium`}
+                }  inline-flex items-center px-4 py-2 border text-sm font-medium`}
                 onClick={() => handleChange(p)}
               >
                 {p}
@@ -132,7 +144,7 @@ export const Pagination = ({
         )}
 
         <button
-          className="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
+          className=" inline-flex items-center px-2 py-2  border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
           onClick={() => {
             if (page < totalPage) {
               handleChange(page + 1);
@@ -155,9 +167,20 @@ export const Pagination = ({
             />
           </svg>
         </button>
+        <button
+          className=" inline-flex items-center px-3 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
+          onClick={() => {
+            if (page < totalPage) {
+              handleChange(totalPage);
+            }
+          }}
+          disabled={page === totalPage}
+        >
+          <FaAngleDoubleRight />
+        </button>
       </nav>
     </div>
   ) : (
     <div></div>
   );
-};
+}

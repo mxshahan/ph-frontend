@@ -1,3 +1,4 @@
-export * from './Auth';
-export * from './Movies';
-export * from './NotFound';
+export * from "./Auth";
+export * from "./Routine";
+export * from "./Profile";
+export * from "./NotFound";

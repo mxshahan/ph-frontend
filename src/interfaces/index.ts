@@ -1,2 +1,4 @@
-export * from './models'
-export * from './dto'
+export * from "./dto";
+export * from "./default.interface";
+export * from "./user.interface";
+export * from "./schedule.interface";
