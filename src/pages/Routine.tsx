@@ -25,10 +25,8 @@ const getSleepHours = () => {
   return getDiffInHours(sleepSchedule.startTime, sleepSchedule.endTime);
 };
 
-interface IProps {}
-
-export const Routine = (props: IProps) => {
-  const { data, isLoading, refetch } = useGetSchedulesQuery({});
+export const Routine = () => {
+  const { data, isLoading } = useGetSchedulesQuery({});
 
   const jobSchedule = useMemo(() => {
     if (data) return data?.filter((d) => d.type === ScheduleType.JOB);
